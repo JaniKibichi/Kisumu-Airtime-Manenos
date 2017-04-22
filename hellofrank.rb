@@ -82,36 +82,45 @@ post '/airtime-manenos' do
 		puts params + "Just received airtime++++++++++++++++++++++++++++"
 	end	
 	
-
-	#methods
-	def sendCheckout(amount,@from)
-		#define params
-		productName  = "Nerd Payments"
-		currencyCode = "KES"
-		metadata     = {"product"   : "airtime","client" : @phoneNumber}
-		gateway = AfricasTalkingGateway.new(username, apikey)
-		begin
-		    # Initiate the checkout. If successful, you will get back a transactionId
-		    transactionId = gateway.initiateMobilePaymentCheckout(productName, @phoneNumber,  currencyCode, amount, metadata)
-		    puts transactionId
-		    
-		rescue Exception => ex
-		    puts "Encountered an error with Mpesa Checkout: " + ex.message
-		end
-	end
-
-	#methods
-	def sendAirtime(amount, @source)
-		#define params
-		recipients = Array.new
-		recipients[0] = {"phoneNumber" => @phoneNumber, "amount" => amount}
-		gateway = AfricasTalkingGateway.new(username, apikey)
-		begin
-			#send Airtime
-			results = gateway.sendAirtime(recipients)
-			puts results
-		rescue AfricasTalkingGatewayException => ex
-		  puts 'Encountered an error with airtime sending: ' + ex.message
-		end
-	end	
 end 
+
+
+#methods
+def sendCheckout(amount,from)
+	#pull env variable
+	username = ENV['API_LIVE_USERNAME']
+	apikey = ENV['API_LIVE_KEY']
+
+	#define params
+	productName  = "Nerd Payments"
+	currencyCode = "KES"
+	metadata     = {"product"=>'airtime',"client"=>from}
+	gateway = AfricasTalkingGateway.new(username, apikey)
+	begin
+	    # Initiate the checkout. If successful, you will get back a transactionId
+	    transactionId = gateway.initiateMobilePaymentCheckout(productName, from,  currencyCode, amount, metadata)
+	    puts transactionId
+	    
+	rescue Exception => ex
+	    puts "Encountered an error with Mpesa Checkout: " + ex.message
+	end
+end
+
+#methods
+def sendAirtime(amount, source)
+	#pull env variable
+	username = ENV['API_LIVE_USERNAME']
+	apikey = ENV['API_LIVE_KEY']
+		
+	#define params
+	recipients = Array.new
+	recipients[0] = {"phoneNumber" => source, "amount" => amount}
+	gateway = AfricasTalkingGateway.new(username, apikey)
+	begin
+		#send Airtime
+		results = gateway.sendAirtime(recipients)
+		puts results
+	rescue AfricasTalkingGatewayException => ex
+	  puts 'Encountered an error with airtime sending: ' + ex.message
+	end
+end
