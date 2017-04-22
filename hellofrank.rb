@@ -23,3 +23,9 @@ get '/airtime-manenos' do
 	puts result
 end
 
+post '/airtime-manenos' do
+	#1. Get all the POST Parameters from AT
+	#2. For the text - via short code - explode and take the last value
+	#3. Do Mpesa-Checkout
+	#4. On Success - send airtime
+end 
