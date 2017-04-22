@@ -9,4 +9,4 @@ API_LIVE_KEY=ATKEY649c7d3884ad0679b827c7393140bc68b85e0e5b0a31dcb68
 
 - Setting up the logic for [Short code](http://docs.africastalking.com/sms/sending#from), [Airtime](docs.africastalking.com/airtime) and [Mpesa](docs.africastalking.com/ussd) is easy. 
 
-- This is a guide to how to use the code provided on this [repository](https://github.com/JaniKibichi/airtime-manenos) to create a short code service that allows users to but airtime buy sending a message 'Airtime Amount' e.g. 'Airtime 20' to 20414 (no charges)
+- This is a guide to how to use the code provided on this [repository](https://github.com/JaniKibichi/airtime-manenos) to create a short code service that allows users to buy airtime by sending a message 'Airtime Amount' e.g. 'Airtime 20' to 20414 (no charges)
