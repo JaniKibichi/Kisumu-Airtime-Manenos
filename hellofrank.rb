@@ -35,20 +35,6 @@ post '/airtime-manenos' do
 		@text = params[:text]
 		@id = params[:id]
 		@linkId = params[:linkId]
-
-		#b. Mpesa (http://docs.africastalking.com/payments/notification)
-		@category = params[:category]
-		@providerRefId = params[:providerRefId]
-		@productName = params[:productName]
-		@sourceType = params[:sourceType]	
-		@source = params[:source]
-		@destination = params[:destination]
-		@value = params[:value]
-		@status = params[:status]
-		@description = params[:description]
-		@requestMetadata = params[:requestMetadata]
-		@providerMetadata = params[:providerMetadata]
-		@transactionDate = params[:transactionDate]				
 	
 		#c. airtime (http://docs.africastalking.com/airtime/callback)
 		@status = params[:status]
@@ -61,29 +47,48 @@ post '/airtime-manenos' do
 			#2.a.1. Mpesa Checkout
 			sendCheckout(@airtimeRequest.to_i, @from)
 		end		
+
+	#Put all the params to the console
+	if params[:linkId]
+		puts params 
+		puts "Sent request for airtime++++++++++++++++++++++++++++"
+	end
+
+	if params[:requestId]
+		puts params
+		puts "Just received airtime++++++++++++++++++++++++++++"
+	end	
+end 
+
+post '/mwanzo-mpya' do
+	#b. Mpesa (http://docs.africastalking.com/payments/notification)
+	Mpesa = request.body.read
+	@category = Mpesa[:category]
+	@providerRefId = Mpesa[:providerRefId]
+	@productName = Mpesa[:productName]
+	@sourceType = Mpesa[:sourceType]
+	@source = Mpesa[:source]
+	@destination = Mpesa[:destination]
+	@value = Mpesa[:value]
+	@status = Mpesa[:status]
+	@description = Mpesa[:description]
+	@requestMetadata = Mpesa[:requestMetadata]
+	@providerMetadata = Mpesa[:providerMetadata]
+	@transactionDate = Mpesa[:transactionDate]	
+
 	#3. On Success - send airtime
 		#3.a. if the providerRefId exits (on success) and category is MobileCheckout
-		if !@providerRefId.nil?	&& @category == "MobileCheckout"
+		if (!@providerRefId.nil?	&& @category == "MobileCheckout")
 			@airtimeValue = @value.split(' ').last.to_i
 			#3.a.1 send airtime
 			sendAirtime(@airtimeValue.to_i, @source)			
 		end
 
-	#Put all the params to the console
-	if params[:linkId]
-		puts params + "Sent request for airtime++++++++++++++++++++++++++++"
-	end
-
 	if params[:category]
-		puts params + "Just paid for airtime++++++++++++++++++++++++++++"
+		puts "Just paid for airtime++++++++++++++++++++++++++++"
 	end
-
-	if params[:requestId]
-		puts params + "Just received airtime++++++++++++++++++++++++++++"
-	end	
-	
-end 
-
+	puts request.body.read
+end	
 
 #methods
 def sendCheckout(amount,from)
@@ -111,7 +116,7 @@ def sendAirtime(amount, source)
 	#pull env variable
 	username = ENV['API_LIVE_USERNAME']
 	apikey = ENV['API_LIVE_KEY']
-		
+
 	#define params
 	recipients = Array.new
 	recipients[0] = {"phoneNumber" => source, "amount" => amount}
@@ -121,6 +126,6 @@ def sendAirtime(amount, source)
 		results = gateway.sendAirtime(recipients)
 		puts results
 	rescue AfricasTalkingGatewayException => ex
-	  puts 'Encountered an error with airtime sending: ' + ex.message
+		puts 'Encountered an error with airtime sending: ' + ex.message
 	end
 end
