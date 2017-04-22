@@ -62,32 +62,21 @@ end
 
 post '/mwanzo-mpya' do
 	#b. Mpesa (http://docs.africastalking.com/payments/notification)
-	Mpesa = request.body.read
-	@category = Mpesa[:category]
-	@providerRefId = Mpesa[:providerRefId]
-	@productName = Mpesa[:productName]
-	@sourceType = Mpesa[:sourceType]
-	@source = Mpesa[:source]
-	@destination = Mpesa[:destination]
-	@value = Mpesa[:value]
-	@status = Mpesa[:status]
-	@description = Mpesa[:description]
-	@requestMetadata = Mpesa[:requestMetadata]
-	@providerMetadata = Mpesa[:providerMetadata]
-	@transactionDate = Mpesa[:transactionDate]	
+	# Guys, this is a hash -- hash manenos
 
+	puts request.body.read
 	#3. On Success - send airtime
 		#3.a. if the providerRefId exits (on success) and category is MobileCheckout
-		if (!@providerRefId.nil?	&& @category == "MobileCheckout")
-			@airtimeValue = @value.split(' ').last.to_i
+		if (!request.body.read["providerRefId"].nil?	&& request.body.read["category"] == "MobileCheckout")
+			@airtimeValue = request.body.read["value"].split(' ').last.to_i
 			#3.a.1 send airtime
-			sendAirtime(@airtimeValue.to_i, @source)			
+			sendAirtime(@airtimeValue, request.body.read["source"])			
 		end
 
 	if params[:category]
 		puts "Just paid for airtime++++++++++++++++++++++++++++"
 	end
-	puts request.body.read
+
 end	
 
 #methods
