@@ -1,8 +1,13 @@
+#set up the framework
 require 'sinatra'
-#require 'AfricasTalkingGateway'
 require './AfricasTalkingGateway.rb'
 require 'dotenv'
 Dotenv.load #If more that one .env then Dotenv.load('one.env', 'two.env')
+
+#configure the sinatra server
+set :server, 'Puma'
+set :bind, '0.0.0.0'
+set :port, 4500
 
 #The frank sinatra warmup
 get '/frank-says' do 
@@ -118,3 +123,4 @@ def sendAirtime(amount, source)
 		puts 'Encountered an error with airtime sending: ' + ex.message
 	end
 end
+

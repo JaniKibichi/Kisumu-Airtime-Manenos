@@ -1,5 +1,9 @@
 GEM
+  remote: https://rubygems.org/
   specs:
+    africastalking-ruby (1.0.0)
+    daemons (1.2.4)
+    dotenv (2.2.0)
     rack (1.6.5)
     rack-protection (1.5.3)
       rack
@@ -13,7 +17,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  africastalking-ruby (= 1.0.0)
+  daemons (~> 1.2, >= 1.2.4)
+  dotenv (= 2.2.0)
   sinatra (= 1.4.8)
+
+RUBY VERSION
+   ruby 2.3.1p112
 
 BUNDLED WITH
    1.14.6
