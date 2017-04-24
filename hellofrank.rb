@@ -8,6 +8,7 @@ Dotenv.load #If more that one .env then Dotenv.load('one.env', 'two.env')
 set :server, 'Puma'
 set :bind, '0.0.0.0'
 set :port, 4500
+Process.daemon
 
 #The frank sinatra warmup
 get '/frank-says' do 
